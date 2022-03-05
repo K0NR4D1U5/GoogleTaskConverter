@@ -246,3 +246,4 @@ $RECYCLE.BIN/
 *.json
 *.csv
 .idea/discord.xml
+.idea/codeStyles/codeStyleConfig.xml
