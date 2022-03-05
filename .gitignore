@@ -244,3 +244,5 @@ $RECYCLE.BIN/
 ### Addidional ignores
 *.txt
 *.json
+*.csv
+.idea/discord.xml

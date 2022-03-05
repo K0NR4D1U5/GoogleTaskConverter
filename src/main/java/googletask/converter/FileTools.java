@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
 public class FileTools {
@@ -19,11 +20,16 @@ public class FileTools {
         return content;
     }
 
-    public static void saveTasksToFile(String fileName, LinkedHashSet<String> tasks) {
-        Path filePath = Paths.get(fileName.trim().replace('/', '-') + ".txt");
-
+    public static void saveTasksToFile(String fileName, LinkedHashMap<String, LinkedHashSet<String>> tasks) {
+        Path filePath = Paths.get(fileName.trim().replace('/', '-') + ".csv");
         StringBuilder stringBuilder = new StringBuilder();
-        tasks.forEach(s -> stringBuilder.append(s).append('\n'));
+
+        for (var entry : tasks.entrySet()) {
+            stringBuilder.append("task,").append(entry.getKey()).append(",4,1,,,,,\n,,,,,,,,\n");
+            for (String task : entry.getValue()) {
+                stringBuilder.append(task).append("\n,,,,,,,,\n");
+            }
+        }
         String taskList = stringBuilder.toString().trim();
 
         try {

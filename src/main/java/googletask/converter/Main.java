@@ -15,12 +15,12 @@ public class Main {
     private static final boolean SKIP_EMPTY = true;
     private static final boolean SKIP_HIDDEN = true;
     private static final boolean SKIP_DELETED = true;
-    private static Gson gson = new GsonBuilder().create();
+    private static final Gson gson = new GsonBuilder().create();
 
     public static void main(String[] args) {
         String json = FileTools.readFileToString(System.getProperty("user.dir") + "/Tasks.json");
         GoogleTasks googleTasks = gson.fromJson(json, GoogleTasks.class);
-
+        
         LinkedHashMap<String, LinkedHashSet<String>> uncompletedTasksListMap = new LinkedHashMap<>();
         List<TaskItems> taskItems = googleTasks.getTasks();
 
@@ -36,13 +36,15 @@ public class Main {
 
                 if (!deleted && !hidden && !completed && !empty) {
                     if (!task.getTitle().trim().equals("")) {
-                        uncompletedTasks.add(task.getTitle().trim());
+                        //TODO fix due date and repeatabiliy ("notes": "RO(2,2)",
+                        //                                    "due": "2022-03-05T00:00:00Z")
+                        uncompletedTasks.add("task," + task.getTitle().trim() + "," + "4," + "2,,," + task.getDue() + ",,");
                     }
                 }
             }
             uncompletedTasksListMap.put(taskItem.getTitle(), uncompletedTasks);
         }
 
-        uncompletedTasksListMap.forEach(FileTools::saveTasksToFile);
+        FileTools.saveTasksToFile("Tasks", uncompletedTasksListMap);
     }
 }
